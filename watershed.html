@@ -27,12 +27,17 @@
 		<script type="text/javascript" src="js/date/date.js"></script>
 		<script type="text/javascript" src="http://static.cybercommons.org/js/jquery.flot.time.js"></script>
 		<script type="text/javascript" src="http://static.cybercommons.org/css/bootstrap/js/bootstrap.min.js"></script>
-
+		<script type="text/javascript" src="jquery.flot.hiddengraphs.js"></script>
 		<!--[if IE]><![endif]><![endif]-->
 
 
 <style>
 .placeholder{
+    width:400px;
+    height:300px;
+    margin:5px;
+}
+.placeholder2{
     width:400px;
     height:300px;
     margin:5px;
@@ -70,9 +75,8 @@ $(document).ready( function() {
     //gw 72019
     //stream discharge 00060 gage height ft 00065
 	$('#watershedMap').append("<div><iframe width='700px' height='300px' frameborder='0' src='http://watersgeo.epa.gov/mwm/mwmlite.html?layer=LEGACY_WBD&feature=" + qs.huc +"'/><div id='blockClick' style='position: absolute; top: 0; left: 0; width: 700px; height: 400px'></div></div>"); 
-    setpage('http://waterservices.usgs.gov/nwis/iv/?format=json&huc=' + qs.huc + '&period=P' + qs.day + 'D&parameterCd=00060&siteType=ST','#combGraph','#title','#labeler');
+    setpage('http://waterservices.usgs.gov/nwis/iv/?format=json&huc=' + qs.huc + '&period=P' + qs.day + 'D&parameterCd=00060&siteType=ST','#combGraph0','#title0','#labeler0');
     setpage('http://waterservices.usgs.gov/nwis/iv/?format=json&huc=' + qs.huc + '&period=P' + qs.day + 'D&parameterCd=00065&siteType=ST','#combGraph1','#title1','#labeler1');
-    setpage('http://waterservices.usgs.gov/nwis/iv/?format=json&huc=' + qs.huc + '&period=P' + qs.day + 'D&parameterCd=72019','#combGraph2','#title2','#labeler2');
 	
   function setpage(url,flotdiv,titlediv,labeldiv){
     var options = {
@@ -81,17 +85,21 @@ $(document).ready( function() {
             points: {show: false},
             xaxis: { mode:"time",timeformat: "%m/%d/%y %H:%M ",labelAngle: "45"},
             yaxis:{invert:true},
-            legend:{container: $('#labeler') }
+           	//legend:{container: $('#labeler'),hideable:true }
         };
     $.getJSON('http://test.oklahomawatersurvey.org/data/proxy/?url='.concat(encodeURIComponent(url)).concat('&callback=?'),function(fdata){
-        var comb=[];
+
+	
+	var comb=[];
         var variable;
         var sitename;
-        $.each( fdata.value.timeSeries, function( key, value ) {
+	
+	        
+	$.each( fdata.value.timeSeries, function( key, value ) {
             variable = value.variable.variableDescription;
             sitename = value.sourceInfo.siteName;
 			
-            var flotdiv='placeholder'+ key;
+            var flotdiv='placeholder';
             if(value.values[0].value !== undefined){
                 var data={label:sitename,data:[]}
                 $.each(value.values[0].value, function (key, val){
@@ -104,42 +112,8 @@ $(document).ready( function() {
             comb.push(data);
         });
 
-	//insert checkboxes
-	var choiceContainer = $("#choices");
-	$.each(fdata.value.timeSeries, function(key,value){
-		choiceContainer.append("<br><input type='checkbox' name='" +key+
-		"' checked = 'checked' id ='id" + key + "'></input>" + "<label for 'id=" +key+"'>"+value.sourceInfo.siteName+"</label>");});	
-
-	choiceContainer.find("input").click(plotAccordingToChoices);
-	function plotAccordingToChoices(){
-	var comb=[];
-	choiceContainer.find("input:checked").each(function(){
-						var key = $(this).attr("name");
-						if (key && fdata.value.timeSeries[key]) {
-							comb.push(fdata.value.timeSeries[key]);
-						}
-	});
-
-//	if (data1.length>0){
-	//	$.plot('placeholder',data, 
-//		$.plot(flotdiv, data1, 	
-//		{
-//			yaxis:{
-//				min:0
-//			},
-//			xaxis:{
-//				tickDecimals: 0
-//			}
-//				});
-//			}
-//else
-//{console.log("No data");}
-		}
-	plotAccordingToChoices();
-	//checkboxes end
-
         $(titlediv).append(variable);
-        options.legend={container: $(labeldiv)}
+        options.legend={container: $(labeldiv),hideable:true}
         $.plot(flotdiv, comb, options);
     });
 	
@@ -194,6 +168,120 @@ $(document).ready( function() {
 	
 });
 </script>
+
+<script>
+$(document).ready( function() {
+    jQuery.extend({
+        parseQuerystring: function() {
+            var nvpair = {};
+            var qs = window.location.search.replace('?', '');
+            var pairs = qs.split('&');
+            $.each(pairs, function(i, v) {
+                var pair = v.split('=');
+                nvpair[pair[0]] = pair[1];
+            });
+            return nvpair;
+        }
+    });
+
+
+
+    var qs = $.parseQuerystring();
+
+    setpage('http://waterservices.usgs.gov/nwis/iv/?format=json&huc=' + qs.huc + '&period=P' + qs.day + 'D&parameterCd=72019','#combGraph2','#title2','#labeler2');
+	
+  function setpage(url,flotdiv,titlediv,labeldiv2){
+    var options = {
+            grid: { hoverable: true, clickable: true },
+            lines: {show: true},
+            points: {show: false},
+            xaxis: { mode:"time",timeformat: "%m/%d/%y %H:%M ",labelAngle: "45"},
+            yaxis:{invert:true},
+           	//legend:{container: $('#labeler'),hideable:true }
+        };
+    $.getJSON('http://test.oklahomawatersurvey.org/data/proxy/?url='.concat(encodeURIComponent(url)).concat('&callback=?'),function(fdata){
+
+	
+	var comb=[];
+        var variable;
+        var sitename;
+	
+	        
+	$.each( fdata.value.timeSeries, function( key, value ) {
+            variable = value.variable.variableDescription;
+            sitename = value.sourceInfo.siteName;
+			
+            var flotdiv='placeholder2';
+            if(value.values[0].value !== undefined){
+                var data={label:sitename,data:[]}
+                $.each(value.values[0].value, function (key, val){
+                    var dt=new Date(val.dateTime)
+                    data.data.push([dt,parseFloat(val.value)])
+                });
+            }else{
+                var data={label:sitename,data:null}
+            }
+            comb.push(data);
+        });
+
+        $(titlediv).append(variable);
+        options.legend={container: $(labeldiv2),hideable:true}
+        $.plot(flotdiv, comb, options);
+    });
+	
+
+	
+
+  }
+  // Tooltip #################################################
+	function showTooltip(x, y, contents) {
+		$('<div id="tooltip">' + contents + '</div>').css({
+			top: y - 16,
+			left: x + 20
+		}).appendTo('body').fadeIn();
+	}
+
+	var previousPoint = null;
+
+	$('#combGraph').bind('plothover', function (event, pos, item) {
+		if (item) {
+			if (previousPoint != item.dataIndex) {
+				previousPoint = item.dataIndex;
+				$('#tooltip').remove();
+
+				var x = item.datapoint[0],
+					y = item.datapoint[1].toFixed(2),
+					date = new Date(x);
+					fdate = date.toString("ddd, dd MMM yyyy HH:mm:ss");
+					showTooltip(item.pageX, item.pageY, y + ' cu.ft on ' + fdate +' CMT');
+			}
+		} else {
+			$('#tooltip').remove();
+			previousPoint = null;
+		}
+	});
+		$('#combGraph1,#combGraph2').bind('plothover', function (event, pos, item) {
+		if (item) {
+			if (previousPoint != item.dataIndex) {
+				previousPoint = item.dataIndex;
+				$('#tooltip').remove();
+
+				var x = item.datapoint[0],
+					y = item.datapoint[1].toFixed(2),
+					date = new Date(x);
+					fdate = date.toString("ddd, dd MMM yyyy HH:mm:ss");
+					showTooltip(item.pageX, item.pageY, y + ' ft on ' + fdate +' CMT');
+			}
+		} else {
+			$('#tooltip').remove();
+			previousPoint = null;
+		}
+	});
+	
+});
+</script>
+
+
 <script>
 //*get impaired value 
   $(document).ready( function() {
@@ -324,14 +412,14 @@ function openWin(fileName, windowName,display) {
 								<tr>
 
   <div style="margin-top:10px;width:100%; display: table;">
-    <div style="display:table-header-group" id='title'></div>
+    <div style="display:table-header-group" id='title0'></div>
     <div style="display: table-row;width:100%;height:100%">
       <div style="width: 70%; display: table-cell;"> 
-         <div id="combGraph" class="placeholder"></div>
+         <div id="combGraph0" class="placeholder"></div>
       </div>
       <div style="width:30%;display:table-cell;vertical-align:middle">
-<div style="font-size:10px;" id="choices"></div>      
-   <div style="font-size: 10px; " id='labeler'></div>
+<!--<div style="font-size:10px;" id="choices"></div>-->      
+   <div style="font-size: 10px; " id='labeler0'></div>
       </div>
     </div>
   </div>
@@ -379,7 +467,7 @@ function openWin(fileName, windowName,display) {
         <div style="display:table-header-group" id='title2'></div>
         <div style="display: table-row;width:100%;height:100%">
           <div style="width: 70%; display: table-cell;">
-             <div id="combGraph2" class="placeholder"></div>
+             <div id="combGraph2" class="placeholder2"></div>
 			 
           </div>
           <div style="width:30%;display:table-cell;vertical-align:middle;">
