@@ -37,11 +37,7 @@
     height:300px;
     margin:5px;
 }
-.placeholder2{
-    width:400px;
-    height:300px;
-    margin:5px;
-}
+
 .xAxis > .tickLabel 
 {
     margin-top:40px;
@@ -75,18 +71,22 @@ $(document).ready( function() {
     //gw 72019
     //stream discharge 00060 gage height ft 00065
 	$('#watershedMap').append("<div><iframe width='700px' height='300px' frameborder='0' src='http://watersgeo.epa.gov/mwm/mwmlite.html?layer=LEGACY_WBD&feature=" + qs.huc +"'/><div id='blockClick' style='position: absolute; top: 0; left: 0; width: 700px; height: 400px'></div></div>"); 
-    setpage('http://waterservices.usgs.gov/nwis/iv/?format=json&huc=' + qs.huc + '&period=P' + qs.day + 'D&parameterCd=00060&siteType=ST','#combGraph0','#title0','#labeler0');
-    setpage('http://waterservices.usgs.gov/nwis/iv/?format=json&huc=' + qs.huc + '&period=P' + qs.day + 'D&parameterCd=00065&siteType=ST','#combGraph1','#title1','#labeler1');
+    $('#streamFlow').append("<div><iframe width='400px' height='300px' frameborder='0' src='streamflow.html?huc=" + qs.huc +"&day="+qs.day+"'/></div>"); 
+    $('#gageHeight').append("<div><iframe width='400px' height='300px' frameborder='0' src='gageheight.html?huc=" + qs.huc +"&day="+qs.day+"'/></div>"); 
+	$('#groundWater').append("<div><iframe width='400px' height='300px' frameborder='0' src='groundwater.html?huc=" + qs.huc +"&day="+qs.day+"'/></div>"); 
+
+    //setpage('http://waterservices.usgs.gov/nwis/iv/?format=json&huc=' + qs.huc + '&period=P' + qs.day + 'D&parameterCd=00060&siteType=ST','#combGraph0','#title0','#labeler0');
+    //setpage('http://waterservices.usgs.gov/nwis/iv/?format=json&huc=' + qs.huc + '&period=P' + qs.day + 'D&parameterCd=00065&siteType=ST','#combGraph1','#title1','#labeler1');
 	
   function setpage(url,flotdiv,titlediv,labeldiv){
-    var options = {
+    /*var options = {
             grid: { hoverable: true, clickable: true },
             lines: {show: true},
             points: {show: false},
             xaxis: { mode:"time",timeformat: "%m/%d/%y %H:%M ",labelAngle: "45"},
             yaxis:{invert:true},
            	//legend:{container: $('#labeler'),hideable:true }
-        };
+        };*/
     $.getJSON('http://test.oklahomawatersurvey.org/data/proxy/?url='.concat(encodeURIComponent(url)).concat('&callback=?'),function(fdata){
 
 	
@@ -121,8 +121,9 @@ $(document).ready( function() {
 	
 
   }
+  
   // Tooltip #################################################
-	function showTooltip(x, y, contents) {
+	/*function showTooltip(x, y, contents) {
 		$('<div id="tooltip">' + contents + '</div>').css({
 			top: y - 16,
 			left: x + 20
@@ -153,7 +154,6 @@ $(document).ready( function() {
 			if (previousPoint != item.dataIndex) {
 				previousPoint = item.dataIndex;
 				$('#tooltip').remove();
-
 				var x = item.datapoint[0],
 					y = item.datapoint[1].toFixed(2),
 					date = new Date(x);
@@ -165,122 +165,9 @@ $(document).ready( function() {
 			previousPoint = null;
 		}
 	});
-	
+	*/
 });
 </script>
-
-<script>
-$(document).ready( function() {
-    jQuery.extend({
-        parseQuerystring: function() {
-            var nvpair = {};
-            var qs = window.location.search.replace('?', '');
-            var pairs = qs.split('&');
-            $.each(pairs, function(i, v) {
-                var pair = v.split('=');
-                nvpair[pair[0]] = pair[1];
-            });
-            return nvpair;
-        }
-    });
-
-
-
-    var qs = $.parseQuerystring();
-
-    setpage('http://waterservices.usgs.gov/nwis/iv/?format=json&huc=' + qs.huc + '&period=P' + qs.day + 'D&parameterCd=72019','#combGraph2','#title2','#labeler2');
-	
-  function setpage(url,flotdiv,titlediv,labeldiv2){
-    var options = {
-            grid: { hoverable: true, clickable: true },
-            lines: {show: true},
-            points: {show: false},
-            xaxis: { mode:"time",timeformat: "%m/%d/%y %H:%M ",labelAngle: "45"},
-            yaxis:{invert:true},
-           	//legend:{container: $('#labeler'),hideable:true }
-        };
-    $.getJSON('http://test.oklahomawatersurvey.org/data/proxy/?url='.concat(encodeURIComponent(url)).concat('&callback=?'),function(fdata){
-
-	
-	var comb=[];
-        var variable;
-        var sitename;
-	
-	        
-	$.each( fdata.value.timeSeries, function( key, value ) {
-            variable = value.variable.variableDescription;
-            sitename = value.sourceInfo.siteName;
-			
-            var flotdiv='placeholder2';
-            if(value.values[0].value !== undefined){
-                var data={label:sitename,data:[]}
-                $.each(value.values[0].value, function (key, val){
-                    var dt=new Date(val.dateTime)
-                    data.data.push([dt,parseFloat(val.value)])
-                });
-            }else{
-                var data={label:sitename,data:null}
-            }
-            comb.push(data);
-        });
-
-        $(titlediv).append(variable);
-        options.legend={container: $(labeldiv2),hideable:true}
-        $.plot(flotdiv, comb, options);
-    });
-	
-
-	
-
-  }
-  // Tooltip #################################################
-	function showTooltip(x, y, contents) {
-		$('<div id="tooltip">' + contents + '</div>').css({
-			top: y - 16,
-			left: x + 20
-		}).appendTo('body').fadeIn();
-	}
-
-	var previousPoint = null;
-
-	$('#combGraph').bind('plothover', function (event, pos, item) {
-		if (item) {
-			if (previousPoint != item.dataIndex) {
-				previousPoint = item.dataIndex;
-				$('#tooltip').remove();
-
-				var x = item.datapoint[0],
-					y = item.datapoint[1].toFixed(2),
-					date = new Date(x);
-					fdate = date.toString("ddd, dd MMM yyyy HH:mm:ss");
-					showTooltip(item.pageX, item.pageY, y + ' cu.ft on ' + fdate +' CMT');
-			}
-		} else {
-			$('#tooltip').remove();
-			previousPoint = null;
-		}
-	});
-		$('#combGraph1,#combGraph2').bind('plothover', function (event, pos, item) {
-		if (item) {
-			if (previousPoint != item.dataIndex) {
-				previousPoint = item.dataIndex;
-				$('#tooltip').remove();
-
-				var x = item.datapoint[0],
-					y = item.datapoint[1].toFixed(2),
-					date = new Date(x);
-					fdate = date.toString("ddd, dd MMM yyyy HH:mm:ss");
-					showTooltip(item.pageX, item.pageY, y + ' ft on ' + fdate +' CMT');
-			}
-		} else {
-			$('#tooltip').remove();
-			previousPoint = null;
-		}
-	});
-	
-});
-</script>
-
 
 <script>
 //*get impaired value 
@@ -403,7 +290,21 @@ function openWin(fileName, windowName,display) {
 </table>
 </div>						
 						</div>
-						<div class="grid_2">
+						<!-- streamflow box-->
+									<div class="grid_2">		<div class="box">
+					
+					
+<table>
+<tbody>
+<tr>
+<div style="padding: auto, margin: auto, width: 100%" id="streamFlow"></div>
+
+</tr>
+</tbody>
+</table>
+</div>						
+						</div><!--end-->
+<!--						<div class="grid_2">
 					<div class="box">
 
 <h2>Streamflow</h2>
@@ -418,7 +319,7 @@ function openWin(fileName, windowName,display) {
          <div id="combGraph0" class="placeholder"></div>
       </div>
       <div style="width:30%;display:table-cell;vertical-align:middle">
-<!--<div style="font-size:10px;" id="choices"></div>-->      
+      
    <div style="font-size: 10px; " id='labeler0'></div>
       </div>
     </div>
@@ -428,7 +329,7 @@ function openWin(fileName, windowName,display) {
 
 </div>
 </div>
-
+--
 <div class="grid_2">
 					<div class="box">
 
@@ -454,7 +355,34 @@ function openWin(fileName, windowName,display) {
 					</tr></tbody></table>
 </div>
 
-</div>
+</div>-->
+<!-- gageheight box-->
+											<div class="grid_2">
+					<div class="box">
+					
+<table>
+<tbody>
+<tr>
+<div style="padding: auto, margin: auto, width: 100%" id="gageHeight"></div>
+
+</tr>
+</tbody>
+</table>
+</div>						
+						</div>
+																	<div class="grid_2"><div class="box">
+					
+					
+<table>
+<tbody>
+<tr>
+<div style="padding: auto, margin: auto, width: 100%" id="groundWater"></div>
+
+</tr>
+</tbody>
+</table>
+</div>						
+						</div><!--
 <div class="grid_2">
 
 					<div class="box">
@@ -478,7 +406,7 @@ function openWin(fileName, windowName,display) {
 					</tr></tbody></table>
 </div>
 
-						</div>	
+						</div>	-->
 						<div class="grid_2">
 
 					<div class="box">
