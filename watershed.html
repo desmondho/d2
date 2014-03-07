@@ -5,7 +5,7 @@
 		<title>Oklahoma Water Survey | Dashboard</title>
 		<link rel="stylesheet" href="css/ows_dashboard.css" type="text/css" media="screen" charset="utf-8" />
 		<!--[if IE]><![if gte IE 6]><![endif]-->
-		<script src="js/glow/1.7.0/core/core.js" type="text/javascript"></script>
+		<!--<script src="js/glow/1.7.0/core/core.js" type="text/javascript"></script>
 		<script src="js/glow/1.7.0/widgets/widgets.js" type="text/javascript"></script>
 		<link href="js/glow/1.7.0/widgets/widgets.css" type="text/css" rel="stylesheet" />
 		<script type="text/javascript">
@@ -20,18 +20,22 @@
 				);
 			});
 		</script>
-		
+		-->
 
 		<script type="text/javascript" src="http://static.cybercommons.org/js/jquery-1.7.2.min.js"></script>
 		<script type="text/javascript" src="js/flot/jquery.flot.js"></script>
 		<script type="text/javascript" src="js/date/date.js"></script>
 		<script type="text/javascript" src="http://static.cybercommons.org/js/jquery.flot.time.js"></script>
 		<script type="text/javascript" src="http://static.cybercommons.org/css/bootstrap/js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="jquery.flot.hiddengraphs.js"></script>
+		<script type="text/javascript" src="js/jquery.flot.hiddengraphs.js"></script>
+		<script type="text/javascript" src="js/iframeResize.js"></script>
 		<!--[if IE]><![endif]><![endif]-->
 
 
 <style>
+
+
+	
 .placeholder{
     width:400px;
     height:300px;
@@ -47,7 +51,23 @@
     filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
 </style>
+<script language="JavaScript">
 
+<!--
+function autoResize(id){
+    var newheight;
+    var newwidth;
+
+    if(document.getElementById){
+        newheight=document.getElementById(id).contentWindow.document .body.scrollHeight;
+        newwidth=document.getElementById(id).contentWindow.document .body.scrollWidth;
+    }
+
+    document.getElementById(id).height= (newheight) + "px";
+    document.getElementById(id).width= (newwidth) + "px";
+}
+//-->
+</script>
 
 <script>
 $(document).ready( function() {
@@ -70,10 +90,17 @@ $(document).ready( function() {
     //11090203,11090204,11090106,11090103,11090201,11090202
     //gw 72019
     //stream discharge 00060 gage height ft 00065
-	$('#watershedMap').append("<div><iframe width='700px' height='300px' frameborder='0' src='http://watersgeo.epa.gov/mwm/mwmlite.html?layer=LEGACY_WBD&feature=" + qs.huc +"'/><div id='blockClick' style='position: absolute; top: 0; left: 0; width: 700px; height: 400px'></div></div>"); 
-    $('#streamFlow').append("<div><iframe width='400px' height='300px' frameborder='0' src='streamflow.html?huc=" + qs.huc +"&day="+qs.day+"'/></div>"); 
-    $('#gageHeight').append("<div><iframe width='400px' height='300px' frameborder='0' src='gageheight.html?huc=" + qs.huc +"&day="+qs.day+"'/></div>"); 
-	$('#groundWater').append("<div><iframe width='400px' height='300px' frameborder='0' src='groundwater.html?huc=" + qs.huc +"&day="+qs.day+"'/></div>"); 
+	$('#watershedMap').append("<div><iframe width='700px' height='300px' frameborder='0' src='http://watersgeo.epa.gov/mwm/mwmlite.html?layer=LEGACY_WBD&feature=" + qs.huc +"' scrolling='no' marginwidth='0' marginheight='0' frameborder='0' vspace='0' hspace='0' style='overflow:visible; width:100%; display:none'/><div id='blockClick' style='position: absolute; top: 0; left: 0; width: 700px; height: 400px'></div></div>"); 
+  //  $('#streamFlow').load("streamflow.html?huc=" + qs.huc +"&day="+qs.day); 
+//$('#gageHeight').load("gageheight.html?huc=" + qs.huc +"&day="+qs.day); 
+    //$('#streamFlow').append("<div><iframe id='frameR' height='500px' frameborder='0' src='streamflow.html?huc=" + qs.huc +"&day="+qs.day+"' scrolling='no' marginwidth='0' marginheight='0' frameborder='0' vspace='0' hspace='0' style='overflow:visible; width:100%; display:none'/></div>"); 
+    //$('#gageHeight').append("<div><iframe width='400px' height='100%' frameborder='0' src='gageheight.html?huc=" + qs.huc +"&day="+qs.day+"'/></div>"); 
+	$('#gageHeight').append("<div><iframe src='gageheight.html?huc=" + qs.huc +"&day="+qs.day+"' name='Changethis' id='Changethis' frameborder='0' marginheight='0' onLoad='autoResize('Changethis');'/></div>"); 
+	
+	
+	
+	
+	$('#groundWater').append("<div><iframe width='400px' height='100%' frameborder='0' src='groundwater.html?huc=" + qs.huc +"&day="+qs.day+"'/></div>"); 
 
     //setpage('http://waterservices.usgs.gov/nwis/iv/?format=json&huc=' + qs.huc + '&period=P' + qs.day + 'D&parameterCd=00060&siteType=ST','#combGraph0','#title0','#labeler0');
     //setpage('http://waterservices.usgs.gov/nwis/iv/?format=json&huc=' + qs.huc + '&period=P' + qs.day + 'D&parameterCd=00065&siteType=ST','#combGraph1','#title1','#labeler1');
@@ -255,11 +282,13 @@ function openWin(fileName, windowName,display) {
 </head>
 	<body>
 
-		<h1 id="head">Oklahoma Water Survey Dashboard</h1>
-		
+	<div style="padding: auto, margin: auto, width: 100%" id="streamFlow"></div>	<h1 id="head">Oklahoma Water Survey Dashboard</h1>
 
-			<div id="content" class="container_16 clearfix">
-			
+
+
+			<!--<div id="content" class="container_16 clearfix">
+			-->
+			<div>
 			<div class="grid_map">
 
 					<div class="box">
