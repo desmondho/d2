@@ -42,7 +42,7 @@ $(document).ready( function() {
         }
     });
  var qs = $.parseQuerystring();
-    setpage('http://waterservices.usgs.gov/nwis/iv/?format=json&huc=' + qs.huc + '&period=P' + qs.day + 'D&parameterCd=00065&siteType=ST','#combGraph0','#title0','#labeler0');
+    setpage('http://waterservices.usgs.gov/nwis/iv/?format=json&huc=' + qs.huc + '&period=P' + qs.day + 'D&parameterCd=00065&siteType=ST','#combGraph','#title0','#labeler0');
     function setpage(url,flotdiv,titlediv,labeldiv){
     var options = {
             grid: { hoverable: true, clickable: true },
@@ -133,7 +133,7 @@ $(document).ready( function() {
      var pipe = document.getElementById('helpframe');
 
      // Cachebuster a precaution here to stop browser caching interfering
-     pipe.src = 'helper.html?height='+height+'&cacheb='+Math.random();
+     pipe.src = 'helper2.html?height='+height+'&cacheb='+Math.random();
 
   }
 </script>
@@ -144,10 +144,11 @@ $(document).ready( function() {
     <div style="display:table-header-group" id='title0'></div>
     <div style="display: table-row;width:100%;height:100%">
       <div style="width: 70%; display: table-cell;"> 
-         <div id="combGraph0" class="placeholder"></div>
+         <div id="combGraph" class="placeholder"></div>
       </div>
       <div style="width:30%;display:table-cell;vertical-align:middle">
       
-   <div style="font-size: 10px; " id='labeler0'></div>
+   <div style="font-size: 12px;  font-family:'Times New Roman', Times, serif;" id='labeler0'></div>
+
 </body></html>
 

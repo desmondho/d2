@@ -59,6 +59,7 @@
     // IE & and FF height reporting, can be adjusted as required..
     document.getElementById('streamframe').height = parseInt(height)+60;
     document.getElementById('gageframe').height=parseInt(height)+60;
+    document.getElementById('groundframe').height=parseInt(height)+60;
   }
 </script>
 
@@ -80,32 +81,16 @@ $(document).ready( function() {
 
 
     var qs = $.parseQuerystring();
-    //11090203,11090204,11090106,11090103,11090201,11090202
-    //gw 72019
-    //stream discharge 00060 gage height ft 00065
-	$('#watershedMap').append("<div><iframe width='700px' height='300px' frameborder='0' src='http://watersgeo.epa.gov/mwm/mwmlite.html?layer=LEGACY_WBD&feature=" + qs.huc +"' scrolling='no' marginwidth='0' marginheight='0' frameborder='0' vspace='0' hspace='0' style='overflow:visible; width:100%; display:none'/><div id='blockClick' style='position: absolute; top: 0; left: 0; width: 700px; height: 400px'></div></div>"); 
 
-    $('#streamFlow').append("<div><iframe id='streamframe' width='100%' src='streamflow2.html?huc=" + qs.huc +"&day="+qs.day+"' scrolling='no' marginwidth='0' marginheight='0'></iframe></div>"); 
-    //$('#gageHeight').append("<div><iframe width='400px' height='100%' frameborder='0' src='gageheight.html?huc=" + qs.huc +"&day="+qs.day+"'/></div>"); 
-	$('#gageHeight').append("<div><iframe id='gageframe' width='100%' src='gageheight.html?huc=" + qs.huc +"&day="+qs.day+"' scrolling='no' marginwidht='0' marginheight='0'/></iframe></div>"); 
-	
-	
-	
-	
-	$('#groundWater').append("<div><iframe width='400px' height='100%' frameborder='0' src='groundwater.html?huc=" + qs.huc +"&day="+qs.day+"'/></div>"); 
+	//$('#watershedMap').append("<div><iframe width='700px' height='300px' frameborder='0' src='http://watersgeo.epa.gov/mwm/mwmlite.html?layer=LEGACY_WBD&feature=" + qs.huc +"' scrolling='no' marginwidth='0' marginheight='0' frameborder='0' vspace='0' hspace='0' style='overflow:visible; width:100%; display:none'/><div id='blockClick' style='position: absolute; top: 0; left: 0; width: 700px; height: 400px'></div></div>"); 
 
-    //setpage('http://waterservices.usgs.gov/nwis/iv/?format=json&huc=' + qs.huc + '&period=P' + qs.day + 'D&parameterCd=00060&siteType=ST','#combGraph0','#title0','#labeler0');
-    //setpage('http://waterservices.usgs.gov/nwis/iv/?format=json&huc=' + qs.huc + '&period=P' + qs.day + 'D&parameterCd=00065&siteType=ST','#combGraph1','#title1','#labeler1');
+    $('#streamFlow').append("<div><iframe id='streamframe' width='100%' height='300px' src='streamflow2.html?huc=" + qs.huc +"&day="+qs.day+"' scrolling='no' marginwidth='0' marginheight='0'></iframe></div>"); 
+ 	$('#gageHeight').append("<div><iframe id='gageframe' width='100%' height='300px' src='gageheight.html?huc=" + qs.huc +"&day="+qs.day+"' scrolling='no' marginwidht='0' marginheight='0'/></iframe></div>"); 
+	$('#groundWater').append("<div><iframe id='groundframe' width='100%' height='300px' src='groundwater.html?huc=" + qs.huc +"&day="+qs.day+"' scrolling='no' marginwidht='0' marginheight='0'/></iframe></div>"); 
+
 	
   function setpage(url,flotdiv,titlediv,labeldiv){
-    /*var options = {
-            grid: { hoverable: true, clickable: true },
-            lines: {show: true},
-            points: {show: false},
-            xaxis: { mode:"time",timeformat: "%m/%d/%y %H:%M ",labelAngle: "45"},
-            yaxis:{invert:true},
-           	//legend:{container: $('#labeler'),hideable:true }
-        };*/
+
     $.getJSON('http://test.oklahomawatersurvey.org/data/proxy/?url='.concat(encodeURIComponent(url)).concat('&callback=?'),function(fdata){
 
 	
@@ -141,50 +126,7 @@ $(document).ready( function() {
 
   }
   
-  // Tooltip #################################################
-	/*function showTooltip(x, y, contents) {
-		$('<div id="tooltip">' + contents + '</div>').css({
-			top: y - 16,
-			left: x + 20
-		}).appendTo('body').fadeIn();
-	}
 
-	var previousPoint = null;
-
-	$('#combGraph').bind('plothover', function (event, pos, item) {
-		if (item) {
-			if (previousPoint != item.dataIndex) {
-				previousPoint = item.dataIndex;
-				$('#tooltip').remove();
-
-				var x = item.datapoint[0],
-					y = item.datapoint[1].toFixed(2),
-					date = new Date(x);
-					fdate = date.toString("ddd, dd MMM yyyy HH:mm:ss");
-					showTooltip(item.pageX, item.pageY, y + ' cu.ft on ' + fdate +' CMT');
-			}
-		} else {
-			$('#tooltip').remove();
-			previousPoint = null;
-		}
-	});
-		$('#combGraph1,#combGraph2').bind('plothover', function (event, pos, item) {
-		if (item) {
-			if (previousPoint != item.dataIndex) {
-				previousPoint = item.dataIndex;
-				$('#tooltip').remove();
-				var x = item.datapoint[0],
-					y = item.datapoint[1].toFixed(2),
-					date = new Date(x);
-					fdate = date.toString("ddd, dd MMM yyyy HH:mm:ss");
-					showTooltip(item.pageX, item.pageY, y + ' ft on ' + fdate +' CMT');
-			}
-		} else {
-			$('#tooltip').remove();
-			previousPoint = null;
-		}
-	});
-	*/
 });
 </script>
 
@@ -312,8 +254,8 @@ function openWin(fileName, windowName,display) {
 </div>						
 						</div>
 						<!-- streamflow box-->
-									<div class="grid_2">		<div class="box">
-					
+											<div class="grid_2">
+					<div class="box">
 					
 <table>
 <tbody>
@@ -324,59 +266,7 @@ function openWin(fileName, windowName,display) {
 </tbody>
 </table>
 </div>						
-						</div><!--end-->
-<!--						<div class="grid_2">
-					<div class="box">
-
-<h2>Streamflow</h2>
-						<table>
-							<tbody>
-								<tr>
-
-  <div style="margin-top:10px;width:100%; display: table;">
-    <div style="display:table-header-group" id='title0'></div>
-    <div style="display: table-row;width:100%;height:100%">
-      <div style="width: 70%; display: table-cell;"> 
-         <div id="combGraph0" class="placeholder"></div>
-      </div>
-      <div style="width:30%;display:table-cell;vertical-align:middle">
-      
-   <div style="font-size: 10px; " id='labeler0'></div>
-      </div>
-    </div>
-  </div>
-
-					</tr></tbody></table>
-
-</div>
-</div>
---
-<div class="grid_2">
-					<div class="box">
-
-<h2>Gage Height</h2>
-						<table>
-							<tbody>
-								<tr>
-
-  <div style="margin-top:10px;width:100%; display: table; border: 0px">
-      <div id="title1"></div>
-	  		   
-      <div style="display: table-row;width:100%;height:100%;border:0px">
-        <div style="width: 70%; display: table-cell;">
-           <div id="combGraph1" class="placeholder"></div>
-
-
-        </div>
-        <div style="width:30%;display:table-cell;vertical-align:middle">
-           <div style="font-size: 10px;" id='labeler1'></div>
-        </div>
-      </div>
-  </div>
-					</tr></tbody></table>
-</div>
-
-</div>-->
+						</div>
 <!-- gageheight box-->
 											<div class="grid_2">
 					<div class="box">
