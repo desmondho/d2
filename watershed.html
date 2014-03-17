@@ -51,22 +51,15 @@
     filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
 </style>
-<script language="JavaScript">
-
-<!--
-function autoResize(id){
-    var newheight;
-    var newwidth;
-
-    if(document.getElementById){
-        newheight=document.getElementById(id).contentWindow.document .body.scrollHeight;
-        newwidth=document.getElementById(id).contentWindow.document .body.scrollWidth;
-    }
-
-    document.getElementById(id).height= (newheight) + "px";
-    document.getElementById(id).width= (newwidth) + "px";
-}
-//-->
+<script>
+  // Resize iframe to full height
+  function resizeIframe(height)
+  {
+    // "+60" is a general rule of thumb to allow for differences in
+    // IE & and FF height reporting, can be adjusted as required..
+    document.getElementById('streamframe').height = parseInt(height)+60;
+    document.getElementById('gageframe').height=parseInt(height)+60;
+  }
 </script>
 
 <script>
@@ -91,11 +84,10 @@ $(document).ready( function() {
     //gw 72019
     //stream discharge 00060 gage height ft 00065
 	$('#watershedMap').append("<div><iframe width='700px' height='300px' frameborder='0' src='http://watersgeo.epa.gov/mwm/mwmlite.html?layer=LEGACY_WBD&feature=" + qs.huc +"' scrolling='no' marginwidth='0' marginheight='0' frameborder='0' vspace='0' hspace='0' style='overflow:visible; width:100%; display:none'/><div id='blockClick' style='position: absolute; top: 0; left: 0; width: 700px; height: 400px'></div></div>"); 
-  //  $('#streamFlow').load("streamflow.html?huc=" + qs.huc +"&day="+qs.day); 
-//$('#gageHeight').load("gageheight.html?huc=" + qs.huc +"&day="+qs.day); 
-    //$('#streamFlow').append("<div><iframe id='frameR' height='500px' frameborder='0' src='streamflow.html?huc=" + qs.huc +"&day="+qs.day+"' scrolling='no' marginwidth='0' marginheight='0' frameborder='0' vspace='0' hspace='0' style='overflow:visible; width:100%; display:none'/></div>"); 
+
+    $('#streamFlow').append("<div><iframe id='streamframe' width='100%' src='streamflow2.html?huc=" + qs.huc +"&day="+qs.day+"' scrolling='no' marginwidth='0' marginheight='0'></iframe></div>"); 
     //$('#gageHeight').append("<div><iframe width='400px' height='100%' frameborder='0' src='gageheight.html?huc=" + qs.huc +"&day="+qs.day+"'/></div>"); 
-	$('#gageHeight').append("<div><iframe src='gageheight.html?huc=" + qs.huc +"&day="+qs.day+"' name='Changethis' id='Changethis' frameborder='0' marginheight='0' onLoad='autoResize('Changethis');'/></div>"); 
+	$('#gageHeight').append("<div><iframe id='gageframe' width='100%' src='gageheight.html?huc=" + qs.huc +"&day="+qs.day+"' scrolling='no' marginwidht='0' marginheight='0'/></iframe></div>"); 
 	
 	
 	
@@ -480,7 +472,6 @@ function openWin(fileName, windowName,display) {
 				</div>
 			</div>
 		</div>-->
-
 	</body>
 	
 	
