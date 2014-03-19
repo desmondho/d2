@@ -58,7 +58,7 @@ $.blockUI({message: mess, css:{
         }
     });
  var qs = $.parseQuerystring();
-    setpage('http://waterservices.usgs.gov/nwis/iv/?format=json&huc=' + qs.huc + '&period=P' + qs.day + 'D&parameterCd=00065&siteType=ST','#combGraph','#title0','#labeler0');
+    setpage('http://waterservices.usgs.gov/nwis/iv/?format=json&huc=' + qs.huc + '&period=P' + qs.day + 'D&parameterCd=00065&siteType=ST','#combGraph0','#title0','#labeler0');
     function setpage(url,flotdiv,titlediv,labeldiv){
     var options = {
             grid: { hoverable: true, clickable: true },
@@ -99,6 +99,11 @@ $.blockUI({message: mess, css:{
         $.plot(flotdiv, comb, options);
         
         $.unblockUI();	
+        
+                //empty field check
+        if(!$.trim($('#title0').html()).length!=0){
+			$('#combGraph0').html('No Data Available');
+		}
     });
 	
 
@@ -115,7 +120,7 @@ $.blockUI({message: mess, css:{
 
 	var previousPoint = null;
 
-	$('#combGraph').bind('plothover', function (event, pos, item) {
+	$('#combGraph0').bind('plothover', function (event, pos, item) {
 		if (item) {
 			if (previousPoint != item.dataIndex) {
 				previousPoint = item.dataIndex;
@@ -140,8 +145,8 @@ $.blockUI({message: mess, css:{
 </script>
 
 </head>
-<body>
-<!--					
+
+					
 <body onload="iframeResizePipe()">
 <iframe id="helpframe" src='' height='0' width='0' frameborder='0'></iframe>
 
@@ -158,7 +163,7 @@ $.blockUI({message: mess, css:{
      pipe.src = 'helper2.html?height='+height+'&cacheb='+Math.random();
 
   }
-</script>-->
+</script>
 
 <!--<h2>Gage Height</h2>-->
 
@@ -166,7 +171,7 @@ $.blockUI({message: mess, css:{
     <div style="display:table-header-group" id='title0'></div>
     <div style="display: table-row;width:100%;height:100%">
       <div style="width: 70%; display: table-cell;"> 
-         <div id="combGraph" class="placeholder"></div>
+         <div id="combGraph0" class="placeholder"></div>
       </div>
       <div style="width:30%;display:table-cell;vertical-align:middle">
       

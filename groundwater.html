@@ -101,6 +101,11 @@ setpage('http://waterservices.usgs.gov/nwis/iv/?format=json&huc=' + qs.huc + '&p
         $.plot(flotdiv, comb, options);
         
         $.unblockUI();
+        
+        //empty field check
+        if(!$.trim($('#title0').html()).length!=0){
+			$('#combGraph0').html('No Data Available');
+		}
     });
 	
 
@@ -139,8 +144,7 @@ setpage('http://waterservices.usgs.gov/nwis/iv/?format=json&huc=' + qs.huc + '&p
 </script>
 
 </head>
-<body>
-<!--<body onload="iframeResizePipe()">
+<body onload="iframeResizePipe()">
 <iframe id="helpframe" src='' height='0' width='0' frameborder='0'></iframe>
 
 <script type="text/javascript">
@@ -153,13 +157,13 @@ setpage('http://waterservices.usgs.gov/nwis/iv/?format=json&huc=' + qs.huc + '&p
      var pipe = document.getElementById('helpframe');
 
      // Cachebuster a precaution here to stop browser caching interfering
-     pipe.src = 'helper2.html?height='+height+'&cacheb='+Math.random();
+     pipe.src = 'helper3.html?height='+height+'&cacheb='+Math.random();
 
   }
-</script>-->
+</script>
 
 <!--<h2>Ground Water</h2>-->
-<div style="width:100%" id="show">NO DATA</div>
+
   <div style="margin-top:10px;width:100%; display: table;">
     <div style="display:table-header-group" id='title0'></div>
     <div style="display: table-row;width:100%;height:100%">
@@ -172,12 +176,4 @@ setpage('http://waterservices.usgs.gov/nwis/iv/?format=json&huc=' + qs.huc + '&p
       </div>
     </div>
   </div>
-
-<script>
-
-if($("title0").length==0){
-	$("show").show();
-}else{
-$("show").hide();
-}
-</script>
+</body></html>

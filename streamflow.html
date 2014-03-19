@@ -104,6 +104,11 @@ $.blockUI({message: mess, css:{
         $.plot(flotdiv, comb, options);
         
         $.unblockUI();
+        
+                //empty field check
+        if(!$.trim($('#title0').html()).length!=0){
+			$('#combGraph0').html('No Data Available');
+		}
     });
 	
 
@@ -143,7 +148,7 @@ $.blockUI({message: mess, css:{
 
 
 </head>
-<body><!--
+
 <body onload="iframeResizePipe()">
 <iframe id="helpframe" src='' height='0' width='0' frameborder='0'></iframe>
 
@@ -160,7 +165,7 @@ $.blockUI({message: mess, css:{
      pipe.src = 'helper.html?height='+height+'&cacheb='+Math.random();
 
   }
-</script>-->
+</script>
 
 <!--<h2>Streamflow</h2>-->
 
