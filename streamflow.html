@@ -3,7 +3,7 @@
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 		<title>Oklahoma Water Survey | Dashboard</title>
-		<link rel="stylesheet" href="css/ows_dashboard.css" type="text/css" media="screen" charset="utf-8" />
+		<!--<link rel="stylesheet" href="css/ows_dashboard.css" type="text/css" media="screen" charset="utf-8" />-->
 		<!--[if IE]><![if gte IE 6]><![endif]-->
 				<script type="text/javascript" src="http://static.cybercommons.org/js/jquery-1.7.2.min.js"></script>
 		<script type="text/javascript" src="js/flot/jquery.flot.js"></script>
@@ -11,19 +11,21 @@
 		<script type="text/javascript" src="http://static.cybercommons.org/js/jquery.flot.time.js"></script>
 		<script type="text/javascript" src="http://static.cybercommons.org/css/bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="jquery.flot.hiddengraphs.js"></script>
+		<script type="text/javascript" src="http://static.cybercommons.org/js/jquery.blockUI.js"></script>
 		<!--[if IE]><![endif]><![endif]-->
-		<style>
-				
-#dvLoading{
-   background:#000 url(images/loader.gif) no-repeat center center;
-   height: 100px;
-   width: 100px;
-   position: fixed;
-   z-index: 1000;
-   left: 50%;
-   top: 50%;
-   margin: -25px 0 0 -25px;
-}
+		
+		
+<style>
+
+
+
+#tooltip{
+	position:absolute;
+	background:#fff;
+	display: none;
+	padding: 2px 5px;
+	border: 2px solid #000;
+}				
 			
 .placeholder{
     width:400px;
@@ -40,8 +42,15 @@
     filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
 </style>
+
 <script>
 $(document).ready( function() {
+
+var mess='Loading..'
+$.blockUI({message: mess, css:{
+		border:'none', padding:'15px', backgroundColor:'#ccc',
+		'-webkit-border-radius': '10px','-moz-border-radius':'10px',opacity:0.5,color:'#fff'}});
+		
     jQuery.extend({
         parseQuerystring: function() {
             var nvpair = {};
@@ -93,6 +102,8 @@ $(document).ready( function() {
         $(titlediv).append(variable);
         options.legend={container: $(labeldiv),hideable:true}
         $.plot(flotdiv, comb, options);
+        
+        $.unblockUI();
     });
 	
 
@@ -129,38 +140,48 @@ $(document).ready( function() {
 });
 </script>
 
-<script>
-$(window).load(function(){
-  $('#dvLoading').fadeOut(2000);
-});
-</script>
 
 
 </head>
-<div id="dvLoading"></div>
-	<body>		
-					<div class="grid_2">
-					<div class="box">
+<body><!--
+<body onload="iframeResizePipe()">
+<iframe id="helpframe" src='' height='0' width='0' frameborder='0'></iframe>
 
-<h2>Streamflow</h2>
-						<table>
-							<tbody>
-								<tr>
+<script type="text/javascript">
+  function iframeResizePipe()
+  {
+     // What's the page height?
+     var height = document.body.scrollHeight;
 
-  <div style="margin-top:10px;width:100%; display: table;">
-    <div style="display:table-header-group" id='title0'></div>
-    <div style="display: table-row;width:100%;height:100%">
+     // Going to 'pipe' the data to the parent through the helpframe..
+     var pipe = document.getElementById('helpframe');
+
+     // Cachebuster a precaution here to stop browser caching interfering
+     pipe.src = 'helper.html?height='+height+'&cacheb='+Math.random();
+
+  }
+</script>-->
+
+<!--<h2>Streamflow</h2>-->
+
+  <div style="margin-top:0px;width:100%;display:table;">
+    <div style="display:table-header-group;" id='title0'></div>
+    <div style="display: table-row;width:100%;height:100%;">
+    
       <div style="width: 70%; display: table-cell;"> 
          <div id="combGraph0" class="placeholder"></div>
       </div>
       <div style="width:30%;display:table-cell;vertical-align:middle">
       
-   <div style="font-size: 10px; " id='labeler0'></div>
+   <div style="font-size: 10px;  font-family:'Arial'" id='labeler0'></div>
       </div>
     </div>
   </div>
 
-					</tr></tbody></table>
 
-</div>
-</div>
+
+
+
+
+
+</body></html>
