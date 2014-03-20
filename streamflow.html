@@ -106,7 +106,7 @@ $.blockUI({message: mess, css:{
         $.unblockUI();
         
                 //empty field check
-        if(!$.trim($('#title0').html()).length!=0){
+        if($.trim($('#title0').html()).length==0){
 			$('#combGraph0').html('No Data Available');
 		}
     });
