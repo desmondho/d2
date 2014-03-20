@@ -103,7 +103,7 @@ setpage('http://waterservices.usgs.gov/nwis/iv/?format=json&huc=' + qs.huc + '&p
         $.unblockUI();
         
         //empty field check
-        if(!$.trim($('#title0').html()).length!=0){
+        if($.trim($('#title0').html()).length==0){
 			$('#combGraph0').html('No Data Available');
 		}
     });
