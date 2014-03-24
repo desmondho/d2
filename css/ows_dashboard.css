@@ -602,8 +602,8 @@ float:left
 }
 
 div.tabContent table,td, tr{
-font-size:1em;
-width:500px;
+font-size:11px;
+width:550px;
 border: 1px solid black;
 margin: auto;
 }
