@@ -601,13 +601,13 @@ float:left
 	color:#3298CB;
 }
 
-#impaired_content table,td, tr{
+div.tabContent table,td, tr{
 font-size:1em;
-width:750px;
+width:500px;
 border: 1px solid black;
 margin: auto;
 }
-#impaired_content a.metadata 
+div.tabContent a.metadata 
 {   
 	color:#3298CB;
 	cursor:help;	
@@ -615,7 +615,7 @@ margin: auto;
 
 
  
-#impaired_content a.description 
+div.tabContent a.description 
 {   
 	color:#006699;
 	cursor:help;
@@ -623,35 +623,35 @@ margin: auto;
 	display: block; 	
 }
  
-#impaired_content .left
+div.tabContent .left
 { float:left; }
  
-#impaired_content .center
+div.tabContent .center
 { 
 	text-align:center;
 	margin-top:0;
  }
-#impaired_content table.center 
+div.tabContent table.center 
 { 
 	margin-left: auto;
 	margin-right: auto;
 	text-align: center;
 }
  
-#impaired_content tr.top
+div.tabContent tr.top
 {
 	vertical-align: top;
 	text-align: center;
 }
-#impaired_content tr.threatened
+div.tabContent .threatened
 {	background: #FFFFC1 }
  
-#impaired_content tr.impaired
+div.tabContent .impaired
 {	background: #FAAFBE }
  
-#impaired_content tr.partial
+div.tabContent .partial
 {	background: #FFC7A0 }
  
-#impaired_content tr.unassessed
+.unassessed
 {	background: #EEEEEE }
 
