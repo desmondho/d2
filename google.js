@@ -55,13 +55,20 @@ $(function(){
 			features = [features];
 		}
 			
-			
-           	var vector_layer = new OpenLayers.Layer.Vector(); 
+			var styleMap = new OpenLayers.StyleMap({
+			fillColor: 'red', 
+			strokeColor: 'black',
+			strokeWidth: 2,
+			fillOpacity: 0.6,
+			strokeDashstyle: 'solid'
+			});
+           	var vector_layer = new OpenLayers.Layer.Vector("Vector Layer",
+           													{styleMap: styleMap}); 
            	map.addLayer(vector_layer);	       	
            	vector_layer.addFeatures(features);
-           	
-           	//var dataExtent = vector_layer.getDataExtent();
-			//map.zoomToExtent(dataExtent);
+           
+        //	var dataExtent = vector_layer.getDataExtent();
+		//	map.zoomToExtent(dataExtent);
 			
 			
 

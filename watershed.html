@@ -26,7 +26,12 @@
 		<script type="text/javascript" src="http://static.cybercommons.org/js/jquery.flot.time.js"></script>
 		<script type="text/javascript" src="http://static.cybercommons.org/css/bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/jquery.flot.hiddengraphs.js"></script>
-
+		<script type="text/javascript" src="http://worker.oklahomawatersurvey.org/portal/js/OpenLayers-2.11/OpenLayers.js"></script>
+    
+    <script type="text/javascript" src="http://worker.oklahomawatersurvey.org/portal/js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="http://worker.oklahomawatersurvey.org/portal/js/jquery-ui-1.8.10.custom.min.js"></script>
+    <script src="google.js"></script>
+    <script src="http://maps.google.com/maps/api/js?v=3.6&amp;sensor=false&key=AIzaSyB1OApFshSYU6P8eUk7BpF6_oPMD9Du8yI"></script>
 		<!--[if IE]><![endif]><![endif]-->
 
 
@@ -42,6 +47,12 @@
       div.tabContent.hide { display: none; }/*
       .impaired{background-color:#ff99cc;}
       .good{background-color:#99ffcc;}*/
+      
+      
+      .smallmap {
+    width: 700px;
+    height: 300px;
+    border: 0px;
     </style>
     
     
@@ -77,7 +88,7 @@ $(document).ready( function() {
     //11090203,11090204,11090106,11090103,11090201,11090202
     //gw 72019
     //stream discharge 00060 gage height ft 00065
-	$('#watershedMap').append("<div><iframe width='700px' height='300px' frameborder='0' src='http://watersgeo.epa.gov/mwm/mwmlite.html?layer=LEGACY_WBD&feature=" + qs.huc +"'/><div id='blockClick' style='position: absolute; top: 0; left: 0; width: 700px; height: 400px'></div></div>"); 
+	//$('#watershedMap').append("<div><iframe width='700px' height='300px' frameborder='0' src='http://watersgeo.epa.gov/mwm/mwmlite.html?layer=LEGACY_WBD&feature=" + qs.huc +"'/><div id='blockClick' style='position: absolute; top: 0; left: 0; width: 700px; height: 400px'></div></div>"); 
 	$('#streamFlow').append("<div><iframe id='streamframe' width='100%' height='300px' src='streamflow.html?huc=" + qs.huc +"&day="+qs.day+"' scrolling='no' marginwidth='0' marginheight='0'></iframe></div>"); 
  	$('#gageHeight').append("<div><iframe id='gageframe' width='100%' height='300px' src='gageheight.html?huc=" + qs.huc +"&day="+qs.day+"' scrolling='no' marginwidht='0' marginheight='0'/></iframe></div>"); 
 	$('#groundWater').append("<div><iframe id='groundframe' width='100%' height='300px' src='groundwater.html?huc=" + qs.huc +"&day="+qs.day+"' scrolling='no' marginwidht='0' marginheight='0'/></iframe></div>"); 
@@ -355,7 +366,7 @@ function openWin(fileName, windowName,display) {
 <table>
 <tbody>
 <tr>
-<div style="padding: auto, margin: auto, width: 100%" id="watershedMap"></div>
+<div id="map" class="smallmap"></div>
 
 </tr>
 </tbody>
