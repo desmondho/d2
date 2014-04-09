@@ -33,8 +33,8 @@ $(function(){
 	
             map = new OpenLayers.Map( 'map', options );
            layer = new OpenLayers.Layer.Google(
-			"Google Streets", // the default
-			{numZoomLevels: 20});
+			"Google Hybrid", // the default
+			{type: google.maps.MapTypeId.HYBRID, numZoomLevels: 20});
            
 
             map.addLayer(layer);
@@ -42,7 +42,9 @@ $(function(){
 			center = center.transform(options.displayProjection, options.projection);
 			map.setCenter(center, 6);
             
-
+            map.zoomToMaxExtent = function () {
+			map.setCenter(center, 6);	//re-center if globe clicked
+			};
 	$.getJSON('http://test.oklahomawatersurvey.org/mongo/db_find/ows/watersheds/{"spec":{"properties.HUC":"'+qs.huc+'"}}', function (fdata) {
 		
 		var in_options = {'internalProjection': map.projection, 'externalProjection': map.projection};

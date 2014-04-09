@@ -1,3 +1,5 @@
+
+
 /* Reset */
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,
 blockquote,pre,a,abbr,acronym,address,big,cite,code,del,
@@ -14,7 +16,7 @@ del{text-decoration:line-through}
 table{border-collapse:collapse;border-spacing:0}
 
 /*default text*/
-body, textarea{color:#333;font:12px/1.5 'Helvetica Neue',Arial,'Liberation Sans',FreeSans,sans-serif}
+body, textarea{color:#333;font:12px/1.5 'Helvetica Neue',Arial,'Liberation Sans',FreeSans,sans-serif;background-color: #faf8f0}
 a:focus{outline:1px dotted}
 hr{border:0 #ccc solid;border-top-width:1px;clear:both;height:0}
 h1{font-size:25px}
@@ -393,7 +395,7 @@ a.delete {
 }
 
 #head {
-	background:#313230
+	background:#1A5A80
 }
 
 #navigation a:hover {

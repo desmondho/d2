@@ -3,6 +3,8 @@
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 		<title>Oklahoma Water Survey | Dashboard</title>
+		<link rel=stylesheet href="http://worker.oklahomawatersurvey.org/portal/jqui/development-bundle/themes/base/jquery.ui.all.css"
+          type="text/css" media="screen, print">
 		<link rel="stylesheet" href="css/ows_dashboard.css" type="text/css" media="screen" charset="utf-8" />
 		<!--[if IE]><![if gte IE 6]><![endif]-->
 		<script src="js/glow/1.7.0/core/core.js" type="text/javascript"></script>
@@ -37,15 +39,16 @@
 
 
     <style type="text/css">
-      body { font-size: 80%; font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif; }
-      ul#tabs { list-style-type: none; margin: 30px 0 0 0; padding: 0 0 0.3em 0; }
+		/*body {background-color: #E8E5C7; font-family: sans-serif;}*/
+      /*body { font-size: 80%; font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif; }*/
+      ul#tabs { list-style-type: none; margin: 30px 0 0 0; padding: 0 0 0 0; width: 100%; border-bottom: 1px solid #c9c3ba;}
       ul#tabs li { display: inline; }
-      ul#tabs li a { color: #42454a; background-color: #dedbde; border: 1px solid #c9c3ba; border-bottom: none; padding: 0.3em; text-decoration: none; }
+      ul#tabs li a { color: #42454a; background-color: #dedbde; border: 1px solid #c9c3ba; border-bottom: 0px; width: 100%; padding: 10px 20px 0 20px; text-decoration: none; }
       ul#tabs li a:hover { background-color: #f1f0ee; }
-      ul#tabs li a.selected { color: #000; background-color: #f1f0ee; font-weight: bold; padding: 0.7em 0.3em 0.38em 0.3em; }
+      ul#tabs li a.selected { color: #000; background-color: #f1f0ee; font-weight: bold; padding: 10px 20px 0 20px; }
       /*div.tabContent { border: 1px solid #c9c3ba; padding: 0.5em; background-color: #f1f0ee; }*/
-      div.tabContent.hide { display: none; }/*
-      .impaired{background-color:#ff99cc;}
+      div.tabContent.hide { display: none; }
+      /*.impaired{background-color:#ff99cc;}
       .good{background-color:#99ffcc;}*/
       
       
@@ -68,6 +71,7 @@
   }
 </script>
 <script>
+var qs;
 $(document).ready( function() {
     jQuery.extend({
         parseQuerystring: function() {
@@ -84,14 +88,14 @@ $(document).ready( function() {
 
 
 
-    var qs = $.parseQuerystring();
+    qs = $.parseQuerystring();
     //11090203,11090204,11090106,11090103,11090201,11090202
     //gw 72019
     //stream discharge 00060 gage height ft 00065
 	//$('#watershedMap').append("<div><iframe width='700px' height='300px' frameborder='0' src='http://watersgeo.epa.gov/mwm/mwmlite.html?layer=LEGACY_WBD&feature=" + qs.huc +"'/><div id='blockClick' style='position: absolute; top: 0; left: 0; width: 700px; height: 400px'></div></div>"); 
-	$('#streamFlow').append("<div><iframe id='streamframe' width='100%' height='300px' src='streamflow.html?huc=" + qs.huc +"&day="+qs.day+"' scrolling='no' marginwidth='0' marginheight='0'></iframe></div>"); 
- 	$('#gageHeight').append("<div><iframe id='gageframe' width='100%' height='300px' src='gageheight.html?huc=" + qs.huc +"&day="+qs.day+"' scrolling='no' marginwidht='0' marginheight='0'/></iframe></div>"); 
-	$('#groundWater').append("<div><iframe id='groundframe' width='100%' height='300px' src='groundwater.html?huc=" + qs.huc +"&day="+qs.day+"' scrolling='no' marginwidht='0' marginheight='0'/></iframe></div>"); 
+	$('#streamFlow').append("<div><iframe id='streamframe' width='100%' height='450px' src='streamflow.html?huc=" + qs.huc +"&start=" + qs.start + "&end=" + qs.end + "' scrolling='no' marginwidth='0' marginheight='0'></iframe></div>"); 
+ 	$('#gageHeight').append("<div><iframe id='gageframe' width='100%' height='450px' src='gageheight.html?huc=" + qs.huc +"&start=" + qs.start + "&end=" + qs.end + "' scrolling='no' marginwidht='0' marginheight='0'/></iframe></div>"); 
+	$('#groundWater').append("<div><iframe id='groundframe' width='100%' height='450px' src='groundwater.html?huc=" + qs.huc +"&start=" + qs.start + "&end=" + qs.end + "' scrolling='no' marginwidht='0' marginheight='0'/></iframe></div>"); 
 	
   function setpage(url,flotdiv,titlediv,labeldiv){
     var options = {
@@ -185,75 +189,11 @@ $(document).ready( function() {
 
 
 <script>
-    //impairment tab
+	<!-- impairement tab-->
+  $(function() {
+    $( "#tabs" ).tabs({ selected: 1 });
 
-    var tabLinks = new Array();
-    var contentDivs = new Array();
-
-    $(function() {
-
-      // Grab the tab links and content divs from the page
-      var tabListItems = document.getElementById('tabs').childNodes;
-      for ( var i = 0; i < tabListItems.length; i++ ) {
-        if ( tabListItems[i].nodeName == "LI" ) {
-          var tabLink = getFirstChildWithTagName( tabListItems[i], 'A' );
-          var id = getHash( tabLink.getAttribute('href') );
-          tabLinks[id] = tabLink;
-          contentDivs[id] = document.getElementById( id );
-        }
-      }
-
-      // Assign onclick events to the tab links, and
-      // highlight the first tab
-      var i = 0;
-
-      for ( var id in tabLinks ) {
-        tabLinks[id].onclick = showTab;
-        tabLinks[id].onfocus = function() { this.blur() };
-        if ( i == 0 ) tabLinks[id].className = 'selected';
-        i++;
-      }
-
-      // Hide all content divs except the first
-      var i = 0;
-
-      for ( var id in contentDivs ) {
-        if ( i != 0 ) contentDivs[id].className = 'tabContent hide';
-        i++;
-      }
-    })
-
-    function showTab() {
-      var selectedId = getHash( this.getAttribute('href') );
-
-      // Highlight the selected tab, and dim all others.
-      // Also show the selected content div, and hide all others.
-      for ( var id in contentDivs ) {
-        if ( id == selectedId ) {
-          tabLinks[id].className = 'selected';
-          contentDivs[id].className = 'tabContent';
-        } else {
-          tabLinks[id].className = '';
-          contentDivs[id].className = 'tabContent hide';
-        }
-      }
-
-      // Stop the browser following the link
-      return false;
-    }
-
-    function getFirstChildWithTagName( element, tagName ) {
-      for ( var i = 0; i < element.childNodes.length; i++ ) {
-        if ( element.childNodes[i].nodeName == tagName ) return element.childNodes[i];
-      }
-    }
-
-    function getHash( url ) {
-      var hashPos = url.lastIndexOf ( '#' );
-      return url.substring( hashPos + 1 );
-    }
-
-    //]]>
+  });
 </script>	
 
 
@@ -276,16 +216,16 @@ $(document).ready( function() {
     $.getJSON("http://test.oklahomawatersurvey.org/mongo/db_find/ows/impaired_waters/{'spec':{'huc':'" + qs.huc +"'}}".concat('?callback=?'),function(fdata){
         for (var i in fdata) { 
         if (fdata[i].tmdl_year == 2006){
-        document.getElementById("d2006").innerHTML = fdata[i].table1;
+        document.getElementById("2006").innerHTML = fdata[i].table1;
         }
         else if (fdata[i].tmdl_year == 2008){
-        document.getElementById("c2008").innerHTML = fdata[i].table1;
+        document.getElementById("2008").innerHTML = fdata[i].table1;
         }
 		else if (fdata[i].tmdl_year == 2010){
-        document.getElementById("b2010").innerHTML = fdata[i].table1;
+        document.getElementById("2010").innerHTML = fdata[i].table1;
         }
         else if (fdata[i].tmdl_year == 2012){
-        document.getElementById("a2012").innerHTML = fdata[i].table1;
+        document.getElementById("2012").innerHTML = fdata[i].table1;
         }
         }
 
@@ -432,7 +372,7 @@ function openWin(fileName, windowName,display) {
 
 					<div class="box">
 
-<h2>Top 10 Land Cover Types</h2>
+<h2>2012 Top 10 Land Cover Types</h2>
 						<table>
 <tbody>
 <tr>
@@ -451,19 +391,21 @@ function openWin(fileName, windowName,display) {
 
 					<h2>EPA Impaired Water</h2>
 					
-					    <ul id="tabs">
-      <LI><a href="#a2012">2012</a></LI>
-      <LI><a href="#b2010">2010</a></LI>
-      <LI><a href="#c2008">2008</a></LI>
-      <LI><a href="#d2006">2006</a></LI>
-    </ul>
-					<div id="a2012" class="tabContent" style="width:100%; align:left"></div>
-					<div id="b2010" class="tabContent" style="width:100%; align:left"></div>
-					<div id="c2008" class="tabContent" style="width:100%; align:left"></div>
-					<div id="d2006" class="tabContent" style="width:100%; align:left"></div>
 
 
 
+<div id="tabs">
+  <ul>
+    <li><a href="#2012">2012</a></li>
+    <li><a href="#2010">2010</a></li>
+    <li><a href="#2008">2008</a></li>
+    <li><a href="#2006">2006</a></li>
+  </ul>
+	<div id="2012" class="tabContent"></div>
+	<div id="2010" class="tabContent"></div>
+	<div id="2008" class="tabContent"></div>
+	<div id="2006" class="tabContent"></div>
+</div>
 
 
 
