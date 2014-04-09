@@ -7,7 +7,7 @@ dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,
 sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,
 form,label,legend,table,caption,tbody,tfoot,thead,tr,th,
 td{margin:0;padding:0;border:0;outline:0;font-size:1.0em;vertical-align:baseline}
-body{line-height:1}
+body{line-height:1;background-color: #faf8f0}
 ol,ul{list-style:none}
 blockquote,q{quotes:none}
 blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outline:0}
@@ -16,7 +16,7 @@ del{text-decoration:line-through}
 table{border-collapse:collapse;border-spacing:0}
 
 /*default text*/
-body, textarea{color:#333;font:12px/1.5 'Helvetica Neue',Arial,'Liberation Sans',FreeSans,sans-serif;background-color: #faf8f0}
+body, textarea{color:#333;font:12px/1.5 'Helvetica Neue',Arial,'Liberation Sans',FreeSans,sans-serif}
 a:focus{outline:1px dotted}
 hr{border:0 #ccc solid;border-top-width:1px;clear:both;height:0}
 h1{font-size:25px}
